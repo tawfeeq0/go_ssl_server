@@ -15,13 +15,6 @@ import (
 	"github.com/tawfeeq0/go_ssl_server/server/config"
 )
 
-// CertFile: GLOBAL
-var (
-	CertFile      = "E:\\go\\src\\github.com\\tawfeeq0\\go_ssl_server\\cert\\server.crt"
-	KeyFile       = "E:\\go\\src\\github.com\\tawfeeq0\\go_ssl_server\\cert\\server.key"
-	SericeAddress = ":3000"
-)
-
 // Run : method
 func Run() {
 	config.Load()
@@ -34,6 +27,7 @@ func Run() {
 func listen(port int) {
 	router := NewRouter()
 	srv := NewServer(router, fmt.Sprintf(":%d", port))
+	fmt.Println(config.CERTFILE, config.KEYFILE)
 	log.Fatal(srv.ListenAndServeTLS(config.CERTFILE, config.KEYFILE))
 }
 

@@ -1,7 +1,12 @@
 package models
 
 import (
+	"errors"
+	"html"
+	"strings"
 	"time"
+
+	"github.com/badoux/checkmail"
 
 	"github.com/tawfeeq0/go_ssl_server/security"
 )
@@ -23,4 +28,39 @@ func (user *User) BeforeSave() error {
 	}
 	user.Password = string(hashedPassword)
 	return nil
+}
+
+func (user *User) Prepare() {
+	user.ID = 0
+	user.Nickname = html.EscapeString(strings.TrimSpace(user.Nickname))
+	user.Email = html.EscapeString(strings.TrimSpace(user.Email))
+	user.CreatedAt = time.Now()
+	user.UpdatedAt = time.Now()
+}
+
+func (user *User) Validate(action string) error {
+	switch strings.ToLower(action) {
+	case "update":
+		if user.Nickname == "" {
+			return errors.New("Nickname is required")
+		}
+		if user.Email == "" {
+			return errors.New("Email is required")
+		}
+		if err := checkmail.ValidateFormat(user.Email); err != nil {
+			return errors.New("Email is invalid")
+		}
+		return nil
+	default:
+		if user.Nickname == "" {
+			return errors.New("Nickname is required")
+		}
+		if user.Email == "" {
+			return errors.New("Email is required")
+		}
+		if err := checkmail.ValidateFormat(user.Email); err != nil {
+			return errors.New("Email is invalid")
+		}
+		return nil
+	}
 }

@@ -5,7 +5,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"github.com/tawfeeq0/go_ssl_server/models"
-	"github.com/tawfeeq0/go_ssl_server/utils"
+	"github.com/tawfeeq0/go_ssl_server/utils/channels"
 )
 
 type repositoryUsersCRUD struct {
@@ -35,7 +35,7 @@ func (r *repositoryUsersCRUD) Save(user models.User) (models.User, error) {
 		ch <- true
 	}(done)
 
-	if utils.OK(done) {
+	if channels.OK(done) {
 		return user, nil
 	}
 	return models.User{}, err
@@ -55,7 +55,7 @@ func (r *repositoryUsersCRUD) FindAll() ([]models.User, error) {
 		ch <- true
 	}(done)
 
-	if utils.OK(done) {
+	if channels.OK(done) {
 		return users, nil
 	}
 	return []models.User{}, err
@@ -75,7 +75,7 @@ func (r *repositoryUsersCRUD) FindById(userId uint32) (models.User, error) {
 		ch <- true
 	}(done)
 
-	if utils.OK(done) {
+	if channels.OK(done) {
 		return user, nil
 	}
 	return models.User{}, err
@@ -97,7 +97,7 @@ func (r *repositoryUsersCRUD) Update(userId uint32, user models.User) (int64, er
 		ch <- true
 	}(done)
 
-	if utils.OK(done) {
+	if channels.OK(done) {
 		if rs.Error != nil {
 			return 0, rs.Error
 		}
@@ -115,7 +115,7 @@ func (r *repositoryUsersCRUD) Delete(userId uint32) (int64, error) {
 		ch <- true
 	}(done)
 
-	if utils.OK(done) {
+	if channels.OK(done) {
 		if rs.Error != nil {
 			return 0, rs.Error
 		}

@@ -1,4 +1,4 @@
-package utils
+package channels
 
 func OK(done <-chan bool) bool {
 	select {
