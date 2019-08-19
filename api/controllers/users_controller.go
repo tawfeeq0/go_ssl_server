@@ -22,6 +22,7 @@ func GetUsers(w http.ResponseWriter, r *http.Request) {
 		responses.ERROR(w, http.StatusInternalServerError, err)
 		return
 	}
+	
 	repo := crud.NewRepositoryUsersCRUD(db)
 	func(userRepository repository.UserRepository) {
 		users, err := userRepository.FindAll()

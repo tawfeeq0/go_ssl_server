@@ -19,7 +19,7 @@ import (
 func Run() {
 	config.Load()
 	auto.Load()
-	fmt.Printf("Listening [::]:%d..", config.PORT)
+	fmt.Printf("Listening [::]:%d..\n", config.PORT)
 	listen(config.PORT)
 
 }
@@ -27,7 +27,7 @@ func Run() {
 func listen(port int) {
 	router := NewRouter()
 	srv := NewServer(router, fmt.Sprintf(":%d", port))
-	fmt.Println(config.CERTFILE, config.KEYFILE)
+//	fmt.Println(config.CERTFILE, config.KEYFILE)
 	log.Fatal(srv.ListenAndServeTLS(config.CERTFILE, config.KEYFILE))
 }
 

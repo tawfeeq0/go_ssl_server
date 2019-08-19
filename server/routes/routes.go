@@ -11,6 +11,7 @@ type Route struct {
 	Uri     string
 	Method  string
 	Handler func(w http.ResponseWriter, r *http.Request)
+	AuthRequired bool
 }
 
 func load() []Route {
@@ -28,7 +29,11 @@ func SetupRoutes(r *mux.Router) *mux.Router {
 
 func SetupRoutesWithMiddlewares(r *mux.Router) *mux.Router {
 	for _, route := range load() {
-		r.HandleFunc(route.Uri, middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(route.Handler))).Methods(route.Method)
+		if route.AuthRequired {
+			r.HandleFunc(route.Uri, middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(middlewares.SetMiddlewareAuthentication(route.Handler)))).Methods(route.Method)
+		} else {
+			r.HandleFunc(route.Uri, middlewares.SetMiddlewareLogger(middlewares.SetMiddlewareJSON(route.Handler))).Methods(route.Method)
+		}
 	}
 	return r
 }

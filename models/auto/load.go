@@ -5,7 +5,7 @@ import (
 
 	"github.com/tawfeeq0/go_ssl_server/database"
 	"github.com/tawfeeq0/go_ssl_server/models"
-	"github.com/tawfeeq0/go_ssl_server/utils"
+	"github.com/tawfeeq0/go_ssl_server/utils/console"
 )
 
 func Load() {
@@ -41,7 +41,7 @@ func Load() {
 			log.Fatal(err)
 		}
 
-		utils.Pretty(users[i])
-		utils.Pretty(posts[i])
+		console.Pretty(users[i])
+		console.Pretty(posts[i])
 	}
 }
